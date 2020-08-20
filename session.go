@@ -1,4 +1,4 @@
-package grequests
+package requests
 
 import "net/http"
 

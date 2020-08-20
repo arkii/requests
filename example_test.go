@@ -1,4 +1,4 @@
-package grequests_test
+package requests_test
 
 import (
 	"encoding/xml"
@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/levigross/grequests"
+	"github.com/arkii/requests"
 )
 
 func Example_basicGet() {
 	// This is a very basic GET request
-	resp, err := grequests.Get("http://httpbin.org/get", nil)
+	resp, err := requests.Get("http://httpbin.org/get", nil)
 
 	if err != nil {
 		log.Println(err)
@@ -27,7 +27,7 @@ func Example_basicGet() {
 
 func Example_basicGetCustomHTTPClient() {
 	// This is a very basic GET request
-	resp, err := grequests.Get("http://httpbin.org/get", &grequests.RequestOptions{HTTPClient: http.DefaultClient})
+	resp, err := requests.Get("http://httpbin.org/get", &requests.RequestOptions{HTTPClient: http.DefaultClient})
 
 	if err != nil {
 		log.Println(err)
@@ -46,8 +46,8 @@ func Example_proxy() {
 		log.Panicln(err)
 	}
 
-	resp, err := grequests.Get("http://www.levigross.com/",
-		&grequests.RequestOptions{Proxies: map[string]*url.URL{proxyURL.Scheme: proxyURL}})
+	resp, err := requests.Get("http://www.levigross.com/",
+		&requests.RequestOptions{Proxies: map[string]*url.URL{proxyURL.Scheme: proxyURL}})
 
 	if err != nil {
 		log.Println(err)
@@ -61,8 +61,8 @@ func Example_proxy() {
 }
 
 func Example_cookies() {
-	resp, err := grequests.Get("http://httpbin.org/cookies",
-		&grequests.RequestOptions{
+	resp, err := requests.Get("http://httpbin.org/cookies",
+		&requests.RequestOptions{
 			Cookies: []*http.Cookie{
 				{
 					Name:     "TestCookie",
@@ -90,9 +90,9 @@ func Example_cookies() {
 }
 
 func Example_session() {
-	session := grequests.NewSession(nil)
+	session := requests.NewSession(nil)
 
-	resp, err := session.Get("http://httpbin.org/cookies/set", &grequests.RequestOptions{Params: map[string]string{"one": "two"}})
+	resp, err := session.Get("http://httpbin.org/cookies/set", &requests.RequestOptions{Params: map[string]string{"one": "two"}})
 
 	if err != nil {
 		log.Fatal("Cannot set cookie: ", err)
@@ -118,7 +118,7 @@ func Example_parse_XML() {
 		} `xml:"slide"`
 	}
 
-	resp, err := grequests.Get("http://httpbin.org/xml", nil)
+	resp, err := requests.Get("http://httpbin.org/xml", nil)
 
 	if err != nil {
 		log.Println("Unable to make request", err)
@@ -148,8 +148,8 @@ func Example_parse_XML() {
 }
 
 func Example_customUserAgent() {
-	ro := &grequests.RequestOptions{UserAgent: "LeviBot 0.1"}
-	resp, err := grequests.Get("http://httpbin.org/get", ro)
+	ro := &requests.RequestOptions{UserAgent: "LeviBot 0.1"}
+	resp, err := requests.Get("http://httpbin.org/get", ro)
 
 	if err != nil {
 		log.Fatal("Oops something went wrong: ", err)
@@ -163,8 +163,8 @@ func Example_customUserAgent() {
 }
 
 func Example_basicAuth() {
-	ro := &grequests.RequestOptions{Auth: []string{"Levi", "Bot"}}
-	resp, err := grequests.Get("http://httpbin.org/get", ro)
+	ro := &requests.RequestOptions{Auth: []string{"Levi", "Bot"}}
+	resp, err := requests.Get("http://httpbin.org/get", ro)
 	// Not the usual JSON so copy and paste from below
 
 	if err != nil {
@@ -177,9 +177,9 @@ func Example_basicAuth() {
 }
 
 func Example_customHTTPHeader() {
-	ro := &grequests.RequestOptions{UserAgent: "LeviBot 0.1",
+	ro := &requests.RequestOptions{UserAgent: "LeviBot 0.1",
 		Headers: map[string]string{"X-Wonderful-Header": "1"}}
-	resp, err := grequests.Get("http://httpbin.org/get", ro)
+	resp, err := requests.Get("http://httpbin.org/get", ro)
 	// Not the usual JSON so copy and paste from below
 
 	if err != nil {
@@ -192,8 +192,8 @@ func Example_customHTTPHeader() {
 }
 
 func Example_acceptInvalidTLSCert() {
-	ro := &grequests.RequestOptions{InsecureSkipVerify: true}
-	resp, err := grequests.Get("https://www.pcwebshop.co.uk/", ro)
+	ro := &requests.RequestOptions{InsecureSkipVerify: true}
+	resp, err := requests.Get("https://www.pcwebshop.co.uk/", ro)
 
 	if err != nil {
 		log.Println("Unable to make request", err)
@@ -205,10 +205,10 @@ func Example_acceptInvalidTLSCert() {
 }
 
 func Example_urlQueryParams() {
-	ro := &grequests.RequestOptions{
+	ro := &requests.RequestOptions{
 		Params: map[string]string{"Hello": "World", "Goodbye": "World"},
 	}
-	resp, err := grequests.Get("http://httpbin.org/get", ro)
+	resp, err := requests.Get("http://httpbin.org/get", ro)
 	// url will now be http://httpbin.org/get?hello=world&goodbye=world
 
 	if err != nil {
@@ -221,7 +221,7 @@ func Example_urlQueryParams() {
 }
 
 func Example_downloadFile() {
-	resp, err := grequests.Get("http://httpbin.org/get", nil)
+	resp, err := requests.Get("http://httpbin.org/get", nil)
 
 	if err != nil {
 		log.Println("Unable to make request", err)
@@ -242,8 +242,8 @@ func Example_downloadFile() {
 }
 
 func Example_postForm() {
-	resp, err := grequests.Post("http://httpbin.org/post",
-		&grequests.RequestOptions{Data: map[string]string{"One": "Two"}})
+	resp, err := requests.Post("http://httpbin.org/post",
+		&requests.RequestOptions{Data: map[string]string{"One": "Two"}})
 
 	// This is the basic form POST. The request body will be `one=two`
 
@@ -264,8 +264,8 @@ func Example_postXML() {
 		Height int
 	}
 
-	resp, err := grequests.Post("http://httpbin.org/post",
-		&grequests.RequestOptions{XML: XMLPostMessage{Name: "Human", Age: 1, Height: 1}})
+	resp, err := requests.Post("http://httpbin.org/post",
+		&requests.RequestOptions{XML: XMLPostMessage{Name: "Human", Age: 1, Height: 1}})
 	// The request body will contain the XML generated by the `XMLPostMessage` struct
 
 	if err != nil {
@@ -279,15 +279,15 @@ func Example_postXML() {
 
 func Example_postFileUpload() {
 
-	fd, err := grequests.FileUploadFromDisk("test_files/mypassword")
+	fd, err := requests.FileUploadFromDisk("test_files/mypassword")
 
 	if err != nil {
 		log.Println("Unable to open file: ", err)
 	}
 
 	// This will upload the file as a multipart mime request
-	resp, err := grequests.Post("http://httpbin.org/post",
-		&grequests.RequestOptions{
+	resp, err := requests.Post("http://httpbin.org/post",
+		&requests.RequestOptions{
 			Files: fd,
 			Data:  map[string]string{"One": "Two"},
 		})
@@ -302,8 +302,8 @@ func Example_postFileUpload() {
 }
 
 func Example_postJSONAJAX() {
-	resp, err := grequests.Post("http://httpbin.org/post",
-		&grequests.RequestOptions{
+	resp, err := requests.Post("http://httpbin.org/post",
+		&requests.RequestOptions{
 			JSON:   map[string]string{"One": "Two"},
 			IsAjax: true, // this adds the X-Requested-With: XMLHttpRequest header
 		})
